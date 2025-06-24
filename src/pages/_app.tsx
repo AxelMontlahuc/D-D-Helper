@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     <NavigationMenuList>
                       <NavigationMenuItem>
                         <NavigationMenuLink asChild>
-                          <Link href="/">Account</Link>
+                          <Link href="/account">Account</Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                       <NavigationMenuItem>
