@@ -56,7 +56,7 @@ export function LoginForm({
                 <Button 
                     variant="outline" 
                     onClick={handleGoogleSignin}
-                    className="w-full"
+                    className="w-full hover:cursor-pointer"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -102,7 +102,7 @@ export function LoginForm({
                         required 
                     />
                 </div>
-                <Button type="submit" onClick={handleLogin} className="w-full">
+                <Button type="submit" onClick={handleLogin} className="w-full hover:cursor-pointer">
                     Login
                 </Button>
                 </div>

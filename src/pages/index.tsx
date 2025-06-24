@@ -41,7 +41,6 @@ export default function Home() {
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className=""
         >
           <Button variant="outline" className="w-[10rem] h-[2.6rem] mt-6 mr-3 hover:cursor-pointer">
             <Link href="/">My Characters</Link>
