@@ -43,7 +43,7 @@ export default function Home() {
           }}
         >
           <Button variant="outline" className="w-[10rem] h-[2.6rem] mt-6 mr-3 hover:cursor-pointer">
-            <Link href="/">My Characters</Link>
+            <Link href="/characters">My Characters</Link>
           </Button>
 
           <Button variant="outline" className="w-[10rem] h-[2.6rem] mt-6 ml-3 hover:cursor-pointer">

@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
                       </NavigationMenuItem>
                       <NavigationMenuItem>
                         <NavigationMenuLink asChild>
-                          <Link href="/">Characters</Link>
+                          <Link href="/characters">Characters</Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                       <NavigationMenuItem>
