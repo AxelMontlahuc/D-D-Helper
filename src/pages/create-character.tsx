@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { auth, db } from "@/firebase/init";
+import { collection, addDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -42,6 +44,17 @@ export default function CreateCharacterPage() {
         }
     };
 
+    const handleFinish = async () => {
+        const user = auth.currentUser;
+        try {
+            const charactersRef = collection(db, `users/${user?.uid}/characters`);
+            await addDoc(charactersRef, characterData);
+            console.log("Character created successfully!");
+        } catch (error) {
+            console.error("Error creating character:", error);
+        }
+    }
+
     return (
         <main className="flex flex-col items-center justify-center h-[calc(100vh-76px)]">
             <div className="w-[90vw] h-[calc(90vh-79px)] m-12 p-8 flex flex-col items-center rounded-md border">
@@ -49,7 +62,7 @@ export default function CreateCharacterPage() {
                     <Button onClick={handlePrevious} className="hover:cursor-pointer">Previous</Button>
                     <Progress value={(step / totalSteps) * 100} className="w-[80%]" />
                     { step === totalSteps && 
-                        <Button onClick={handleNext} className="hover:cursor-pointer">Finish</Button>
+                        <Button onClick={handleFinish} className="hover:cursor-pointer">Finish</Button>
                     }
                     { step < totalSteps &&
                         <Button onClick={handleNext} className="hover:cursor-pointer">Next</Button>
