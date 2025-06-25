@@ -60,6 +60,7 @@ export default function CharactersPage() {
                         <h2 className="text-[20px]">Characters</h2>
                         <Button
                             onClick={() => router.push("/create-character")}
+                            className="hover:cursor-pointer"
                         >
                             Add Character
                         </Button>
