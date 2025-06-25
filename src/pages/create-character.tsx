@@ -4,8 +4,31 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function CreateCharacterPage() {
+    const [characterData, setCharacterData] = useState({
+        name: "",
+        race: "",
+        class: "",
+        background: "",
+        stats: {
+            strength: 10,
+            dexterity: 10,
+            constitution: 10,
+            intelligence: 10,
+            wisdom: 10,
+            charisma: 10
+        }, 
+        equipment: {
+            meleeWeapon: "",
+            rangedWeapon: "",
+            martialMeleeWeapon: "",
+            martialRangedWeapon: "",
+            armor: "",
+            shield: ""
+        }
+    });
+
     const [step, setStep] = useState(0);
-    const totalSteps = 3;
+    const totalSteps = 2;
 
     const handleNext = () => {
         if (step < totalSteps) {
@@ -20,11 +43,8 @@ export default function CreateCharacterPage() {
     };
 
     return (
-        <main className="flex flex-col items-center h-[calc(100vh-76px)]">
-            <h1 className="mt-4 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-6xl">
-                Create a Character
-            </h1>
-            <div className="w-[1400px] h-[800px] m-12 p-8 flex flex-col items-center rounded-md border">
+        <main className="flex flex-col items-center justify-center h-[calc(100vh-76px)]">
+            <div className="w-[90vw] h-[calc(90vh-79px)] m-12 p-8 flex flex-col items-center rounded-md border">
                 <div className="w-full h-[40px] mb-8 flex flex-row items-center justify-between rounded-md">
                     <Button onClick={handlePrevious} className="hover:cursor-pointer">Previous</Button>
                     <Progress value={(step / totalSteps) * 100} className="w-[80%]" />
@@ -34,21 +54,35 @@ export default function CreateCharacterPage() {
                     { step < totalSteps &&
                         <Button onClick={handleNext} className="hover:cursor-pointer">Next</Button>
                     }
-                    
                 </div>
                 <div className="w-full h-full flex items-center justify-center rounded-md">
                     {step === 0 && (
-                        <div className="h-min flex flex-col items-center p-4 gap-20">
+                        <div className="h-min flex flex-col items-center p-4 gap-10">
                             <h2 className="w-full bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-5xl">
                                 Step 1: Basics
                             </h2>
                             <div className="flex flex-col items-center gap-6">
                                 <div className="text-2xl w-[600px] flex justify-between">
-                                    Name: <input type="text" className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px] text-[16px]" />
+                                    Name: 
+                                    <input 
+                                        type="text" 
+                                        value={characterData.name}
+                                        onChange={(e) => setCharacterData({
+                                            ...characterData,
+                                            name: e.target.value
+                                        })}
+                                        className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px] text-[16px]" 
+                                    />
                                 </div>
                                 <div className="text-2xl w-[600px] flex justify-between">
                                     Race: 
-                                    <Select>
+                                    <Select 
+                                        value={characterData.race}
+                                        onValueChange={(v) => setCharacterData({
+                                            ...characterData,
+                                            race: v
+                                        })}
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Pick a race" />
                                         </SelectTrigger>
@@ -67,7 +101,13 @@ export default function CreateCharacterPage() {
                                 </div>
                                 <div className="text-2xl w-[600px] flex justify-between">
                                     Class: 
-                                    <Select>
+                                    <Select 
+                                        value={characterData.class}
+                                        onValueChange={(v) => setCharacterData({
+                                            ...characterData,
+                                            class: v
+                                        })}
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Pick a class" />
                                         </SelectTrigger>
@@ -89,7 +129,13 @@ export default function CreateCharacterPage() {
                                 </div>
                                 <div className="text-2xl w-[600px] flex justify-between">
                                     Background:
-                                    <Select>
+                                    <Select 
+                                        value={characterData.background}
+                                        onValueChange={(v) => setCharacterData({
+                                            ...characterData,
+                                            background: v
+                                        })}
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Pick a background" />
                                         </SelectTrigger>
@@ -113,41 +159,153 @@ export default function CreateCharacterPage() {
                         </div>
                     )}
                     {step === 1 && (
-                        <div className="h-min flex flex-col items-center p-4 gap-20">
+                        <div className="h-min flex flex-col items-center p-4 gap-10">
                             <h2 className="w-full bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-5xl">
                                 Step 2: Stats
                             </h2>
                             <div className="flex flex-col items-center gap-6">
                                 <div className="text-2xl w-[600px] flex justify-between">
-                                    Strength: <input type="number" min={0} max={20} className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]" />
+                                    Strength:
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={20}
+                                        value={characterData.stats.strength}
+                                        onChange={(e) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                stats: {
+                                                    ...characterData.stats,
+                                                    strength: +e.target.value,
+                                                },
+                                            })
+                                        }
+                                        className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]"
+                                    />
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
-                                    Dexterity: <input type="number" min={0} max={20} className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]" />
+                                    Dexterity:
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={20}
+                                        value={characterData.stats.dexterity}
+                                        onChange={(e) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                stats: {
+                                                    ...characterData.stats,
+                                                    dexterity: +e.target.value,
+                                                },
+                                            })
+                                        }
+                                        className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]"
+                                    />
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
-                                    Constitution: <input type="number" min={0} max={20} className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]" />
+                                    Constitution:
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={20}
+                                        value={characterData.stats.constitution}
+                                        onChange={(e) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                stats: {
+                                                    ...characterData.stats,
+                                                    constitution: +e.target.value,
+                                                },
+                                            })
+                                        }
+                                        className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]"
+                                    />
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
-                                    Intelligence: <input type="number" min={0} max={20} className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]" />
+                                    Intelligence:
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={20}
+                                        value={characterData.stats.intelligence}
+                                        onChange={(e) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                stats: {
+                                                    ...characterData.stats,
+                                                    intelligence: +e.target.value,
+                                                },
+                                            })
+                                        }
+                                        className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]"
+                                    />
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
-                                    Wisdom: <input type="number" min={0} max={20} className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]" />
+                                    Wisdom:
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={20}
+                                        value={characterData.stats.wisdom}
+                                        onChange={(e) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                stats: {
+                                                    ...characterData.stats,
+                                                    wisdom: +e.target.value,
+                                                },
+                                            })
+                                        }
+                                        className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]"
+                                    />
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
-                                    Charisma: <input type="number" min={0} max={20} className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]" />
+                                    Charisma:
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={20}
+                                        value={characterData.stats.charisma}
+                                        onChange={(e) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                stats: {
+                                                    ...characterData.stats,
+                                                    charisma: +e.target.value,
+                                                },
+                                            })
+                                        }
+                                        className="border rounded-md focus:outline-0 pl-2 pr-2 w-[300px]"
+                                    />
                                 </div>
                             </div>
                         </div>
                     )}
                     {step === 2 && (
-                        <div className="h-min flex flex-col items-center p-4 gap-20">
+                        <div className="h-min flex flex-col items-center p-4 gap-10">
                             <h2 className="w-full bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-5xl">
                                 Step 3: Equipment
                             </h2>
                             <div className="flex flex-col items-center gap-6">
                                 <div className="text-2xl w-[600px] flex justify-between">
-                                    Single Melee Weapon: 
-                                    <Select>
+                                    Single Melee Weapon:
+                                    <Select
+                                        value={characterData.equipment.meleeWeapon}
+                                        onValueChange={(v) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                equipment: {
+                                                    ...characterData.equipment,
+                                                    meleeWeapon: v,
+                                                },
+                                            })
+                                        }
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Pick a weapon" />
                                         </SelectTrigger>
@@ -165,9 +323,21 @@ export default function CreateCharacterPage() {
                                         </SelectContent>
                                     </Select>
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
                                     Single Ranged Weapon:
-                                    <Select>
+                                    <Select
+                                        value={characterData.equipment.rangedWeapon}
+                                        onValueChange={(v) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                equipment: {
+                                                    ...characterData.equipment,
+                                                    rangedWeapon: v,
+                                                },
+                                            })
+                                        }
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Pick a weapon" />
                                         </SelectTrigger>
@@ -179,9 +349,21 @@ export default function CreateCharacterPage() {
                                         </SelectContent>
                                     </Select>
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
                                     Martial Melee Weapon:
-                                    <Select>
+                                    <Select
+                                        value={characterData.equipment.martialMeleeWeapon}
+                                        onValueChange={(v) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                equipment: {
+                                                    ...characterData.equipment,
+                                                    martialMeleeWeapon: v,
+                                                },
+                                            })
+                                        }
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Pick a weapon" />
                                         </SelectTrigger>
@@ -207,9 +389,21 @@ export default function CreateCharacterPage() {
                                         </SelectContent>
                                     </Select>
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
                                     Martial Ranged Weapon:
-                                    <Select>
+                                    <Select
+                                        value={characterData.equipment.martialRangedWeapon}
+                                        onValueChange={(v) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                equipment: {
+                                                    ...characterData.equipment,
+                                                    martialRangedWeapon: v,
+                                                },
+                                            })
+                                        }
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Pick a weapon" />
                                         </SelectTrigger>
@@ -222,31 +416,55 @@ export default function CreateCharacterPage() {
                                         </SelectContent>
                                     </Select>
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
                                     Armor:
-                                    <Select>
+                                    <Select
+                                        value={characterData.equipment.armor}
+                                        onValueChange={(v) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                equipment: {
+                                                    ...characterData.equipment,
+                                                    armor: v,
+                                                },
+                                            })
+                                        }
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Pick an armor" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="padded">Padded</SelectItem>
                                             <SelectItem value="leather">Leather</SelectItem>
-                                            <SelectItem value="studdedleather">Studded leather</SelectItem>
+                                            <SelectItem value="studdedleather">Studded Leather</SelectItem>
                                             <SelectItem value="hide">Hide</SelectItem>
-                                            <SelectItem value="chainshirt">Chain shirt</SelectItem>
-                                            <SelectItem value="scalemail">Scale mail</SelectItem>
+                                            <SelectItem value="chainshirt">Chain Shirt</SelectItem>
+                                            <SelectItem value="scalemail">Scale Mail</SelectItem>
                                             <SelectItem value="breastplate">Breastplate</SelectItem>
-                                            <SelectItem value="halfplate">Half plate</SelectItem>
-                                            <SelectItem value="ringmail">Ring mail</SelectItem>
-                                            <SelectItem value="chainmail">Chain mail</SelectItem>
+                                            <SelectItem value="halfplate">Half Plate</SelectItem>
+                                            <SelectItem value="ringmail">Ring Mail</SelectItem>
+                                            <SelectItem value="chainmail">Chain Mail</SelectItem>
                                             <SelectItem value="splint">Splint</SelectItem>
                                             <SelectItem value="plate">Plate</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
+
                                 <div className="text-2xl w-[600px] flex justify-between">
                                     Shield:
-                                    <Select>
+                                    <Select
+                                        value={characterData.equipment.shield}
+                                        onValueChange={(v) =>
+                                            setCharacterData({
+                                                ...characterData,
+                                                equipment: {
+                                                    ...characterData.equipment,
+                                                    shield: v,
+                                                },
+                                            })
+                                        }
+                                    >
                                         <SelectTrigger className="w-[300px]">
                                             <SelectValue placeholder="Shield?" />
                                         </SelectTrigger>
@@ -259,8 +477,8 @@ export default function CreateCharacterPage() {
                             </div>
                         </div>
                     )}
-                    {step === 3 && (
-                        <div className="h-min flex flex-col items-center p-4 gap-20">
+                    {/*{step === 3 && (
+                        <div className="h-min flex flex-col items-center p-4 gap-10">
                             <h2 className="w-full bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-5xl">
                                 Step 4: Spells
                             </h2>
@@ -268,7 +486,7 @@ export default function CreateCharacterPage() {
                                 WIP
                             </div>
                         </div>
-                    )}
+                    )}*/}
                 </div>
             </div>
         </main>
