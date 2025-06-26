@@ -36,7 +36,7 @@ export default function CharacterPage() {
     }
 
     useEffect(() => {
-        if (!userId || !id) return; // Ensure userId and id are available before fetching
+        if (!userId || !id) return;
 
         const fetchCharacter = async () => {
             try {
@@ -58,7 +58,7 @@ export default function CharacterPage() {
         };
 
         fetchCharacter();
-    }, [userId, id]); // Re-run the effect if userId or id changes
+    }, [userId, id]);
 
     if (loading) {
         return (
@@ -81,13 +81,33 @@ export default function CharacterPage() {
     }
 
     return (
-        <main className="flex flex-col items-center h-[calc(100vh-76px)]">
-            <h1 className="mt-4 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-6xl">
-                {character.name}
-            </h1>
+        <main className="flex items-center justify-center">
+            <Card className="w-[90vw] h-[80vh] flex flex-col justify-center mt-8 p-20">
+                <h1 className="mt-4 bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-6xl">
+                    {character.name}
+                </h1>
 
-            <Card className="w-[90vw] h-auto flex flex-col items-center justify-center mt-8 p-8">
-                <h2 className="text-[24px] font-semibold mb-4">Character Details</h2>
+                <div className="flex flex-row h-[100%] w-[100%]">
+                    <Card className="w-[50%] h-[100%] rounded-r-none">
+                        <h2 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-4xl">
+                            Stats
+                        </h2>
+                    </Card>
+                    <div className="flex flex-col w-[50%] h-[100%]">
+                        <Card className="w-[100%] h-[50%] rounded-l-none">
+                            <h2 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-4xl">
+                                Basics
+                            </h2>
+                        </Card>
+                        <Card className="w-[100%] h-[50%] rounded-l-none">
+                            <h2 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-4xl">
+                                Equipment
+                            </h2>
+                        </Card>
+                    </div>
+                </div>
+
+                {/*<h2 className="text-[24px] font-semibold mb-4">Character Details</h2>
                 <p><strong>Race:</strong> {character.race}</p>
                 <p><strong>Class:</strong> {character.class}</p>
                 <p><strong>Background:</strong> {character.background}</p>
@@ -108,7 +128,7 @@ export default function CharacterPage() {
                     <li><strong>Martial Ranged Weapon:</strong> {character.equipment.martialRangedWeapon}</li>
                     <li><strong>Armor:</strong> {character.equipment.armor}</li>
                     <li><strong>Shield:</strong> {character.equipment.shield}</li>
-                </ul>
+                </ul>*/}
             </Card>
         </main>
     );
