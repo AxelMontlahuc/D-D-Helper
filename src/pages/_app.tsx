@@ -35,11 +35,11 @@ export default function App({ Component, pageProps }: AppProps) {
                           <Link href="/account">Account</Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
-                      <NavigationMenuItem>
+                      {/*<NavigationMenuItem>
                         <NavigationMenuLink asChild>
                           <Link href="/settings">Settings</Link>
                         </NavigationMenuLink>
-                      </NavigationMenuItem>
+                      </NavigationMenuItem>*/}
                     </NavigationMenuList>
                   </NavigationMenu>
             </div>
