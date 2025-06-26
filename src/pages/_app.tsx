@@ -25,11 +25,6 @@ export default function App({ Component, pageProps }: AppProps) {
                           <Link href="/characters">Characters</Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
-                      <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                          <Link href="/">Campaigns</Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
                     </NavigationMenuList>
                   </NavigationMenu>
 
