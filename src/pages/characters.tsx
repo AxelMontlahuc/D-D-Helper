@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { auth, db } from "@/firebase/init";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { Card } from "@/components/ui/card";
 import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
 export default function CharactersPage() {
     interface Character {
@@ -44,6 +43,18 @@ export default function CharactersPage() {
         }));
         setCharacters(charactersData);
     };
+
+    const handleDelete = async (characterId: string) => {
+        const user = auth.currentUser;
+        try {
+            const characterDocRef = doc(db, `users/${user?.uid}/characters`, characterId);
+            await deleteDoc(characterDocRef);
+            console.log("Character deleted successfully");
+            setCharacters(prevCharacters => prevCharacters.filter(character => character.id !== characterId));
+        } catch (error) {
+            console.error("Error deleting character:", error);
+        }
+    }
 
     if (loggedIn === null) {
         return <div>Loading...</div>;
@@ -96,9 +107,17 @@ export default function CharactersPage() {
                                             variant="outline"
                                             size="sm"
                                             onClick={() => router.push(`/character/${character.id}`)}
-                                            className="hover:cursor-pointer"
+                                            className="hover:cursor-pointer mr-2 ml-2"
                                         >
                                             View
+                                        </Button>
+                                        <Button
+                                            variant="destructive"
+                                            size="sm"
+                                            className="hover:cursor-pointer mr-2 ml-2"
+                                            onClick={() => handleDelete(character.id)}
+                                        >
+                                            Delete
                                         </Button>
                                     </TableCell>
                                 </TableRow>
