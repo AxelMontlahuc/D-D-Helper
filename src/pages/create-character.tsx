@@ -510,8 +510,8 @@ export default function CreateCharacterPage() {
                                             <SelectValue placeholder="Shield?" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="shield">Yes</SelectItem>
-                                            <SelectItem value="noshield">No</SelectItem>
+                                            <SelectItem value="yes">Yes</SelectItem>
+                                            <SelectItem value="no">No</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

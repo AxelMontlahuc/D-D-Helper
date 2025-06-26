@@ -3,6 +3,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { db } from "@/firebase/init";
 import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 export default function CharacterPage() {
     const router = useRouter();
@@ -88,47 +89,63 @@ export default function CharacterPage() {
                 </h1>
 
                 <div className="flex flex-row h-[100%] w-[100%]">
-                    <Card className="w-[50%] h-[100%] rounded-r-none">
+                    <Card className="w-[50%] h-[100%] rounded-r-none p-12">
                         <h2 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-4xl">
                             Stats
                         </h2>
+                        <ul className="h-full flex flex-col justify-between">
+                            <li>
+                                Strength: {character.stats.strength}
+                                <Progress value={character.stats.strength * 100 / 20} />
+                            </li>
+                            <li>
+                                Dexterity: {character.stats.dexterity}
+                                <Progress value={character.stats.dexterity * 100 / 20} />
+                            </li>
+                            <li>
+                                Constitution: {character.stats.constitution}
+                                <Progress value={character.stats.constitution * 100 / 20} />
+                            </li>
+                            <li>
+                                Intelligence: {character.stats.intelligence}
+                                <Progress value={character.stats.intelligence * 100 / 20} />
+                            </li>
+                            <li>
+                                Wisdom: {character.stats.wisdom}
+                                <Progress value={character.stats.wisdom * 100 / 20} />
+                            </li>
+                            <li>
+                                Charisma: {character.stats.charisma}
+                                <Progress value={character.stats.charisma * 100 / 20} />
+                            </li>
+                        </ul>
                     </Card>
                     <div className="flex flex-col w-[50%] h-[100%]">
-                        <Card className="w-[100%] h-[50%] rounded-l-none">
+                        <Card className="w-[100%] h-[50%] rounded-l-none p-12">
                             <h2 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-4xl">
                                 Basics
                             </h2>
+                            <ul className="h-full flex flex-col justify-between">
+                                <li>Race: {character.race}</li>
+                                <li>Class: {character.class}</li>
+                                <li>Background: {character.background}</li>
+                            </ul>
                         </Card>
-                        <Card className="w-[100%] h-[50%] rounded-l-none">
+                        <Card className="w-[100%] h-[50%] rounded-l-none p-12">
                             <h2 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-4xl">
                                 Equipment
                             </h2>
+                            <ul className="h-full flex flex-col justify-between">
+                                <li>Melee Weapon: {character.equipment.meleeWeapon}</li>
+                                <li>Ranged Weapon: {character.equipment.rangedWeapon}</li>
+                                <li>Martial Melee Weapon: {character.equipment.martialMeleeWeapon}</li>
+                                <li>Martial Ranged Weapon: {character.equipment.martialRangedWeapon}</li>
+                                <li>Armor: {character.equipment.armor}</li>
+                                <li>Shield: {character.equipment.shield}</li>
+                            </ul>
                         </Card>
                     </div>
                 </div>
-
-                {/*<h2 className="text-[24px] font-semibold mb-4">Character Details</h2>
-                <p><strong>Race:</strong> {character.race}</p>
-                <p><strong>Class:</strong> {character.class}</p>
-                <p><strong>Background:</strong> {character.background}</p>
-                <h3 className="text-[20px] font-semibold mt-6">Stats</h3>
-                <ul>
-                    <li><strong>Strength:</strong> {character.stats.strength}</li>
-                    <li><strong>Dexterity:</strong> {character.stats.dexterity}</li>
-                    <li><strong>Constitution:</strong> {character.stats.constitution}</li>
-                    <li><strong>Intelligence:</strong> {character.stats.intelligence}</li>
-                    <li><strong>Wisdom:</strong> {character.stats.wisdom}</li>
-                    <li><strong>Charisma:</strong> {character.stats.charisma}</li>
-                </ul>
-                <h3 className="text-[20px] font-semibold mt-6">Equipment</h3>
-                <ul>
-                    <li><strong>Melee Weapon:</strong> {character.equipment.meleeWeapon}</li>
-                    <li><strong>Ranged Weapon:</strong> {character.equipment.rangedWeapon}</li>
-                    <li><strong>Martial Melee Weapon:</strong> {character.equipment.martialMeleeWeapon}</li>
-                    <li><strong>Martial Ranged Weapon:</strong> {character.equipment.martialRangedWeapon}</li>
-                    <li><strong>Armor:</strong> {character.equipment.armor}</li>
-                    <li><strong>Shield:</strong> {character.equipment.shield}</li>
-                </ul>*/}
             </Card>
         </main>
     );
