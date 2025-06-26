@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { auth, db } from "@/firebase/init";
 import { collection, addDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ export default function CreateCharacterPage() {
     });
 
     const [step, setStep] = useState(0);
+    const router = useRouter();
     const totalSteps = 2;
 
     const handleNext = () => {
@@ -50,6 +52,32 @@ export default function CreateCharacterPage() {
             const charactersRef = collection(db, `users/${user?.uid}/characters`);
             await addDoc(charactersRef, characterData);
             console.log("Character created successfully!");
+            
+            setStep(0);
+            setCharacterData({
+                name: "",
+                race: "",
+                class: "",
+                background: "",
+                stats: {
+                    strength: 10,
+                    dexterity: 10,
+                    constitution: 10,
+                    intelligence: 10,
+                    wisdom: 10,
+                    charisma: 10
+                },
+                equipment: {
+                    meleeWeapon: "",
+                    rangedWeapon: "",
+                    martialMeleeWeapon: "",
+                    martialRangedWeapon: "",
+                    armor: "",
+                    shield: ""
+                }
+            });
+
+            router.push("/characters");
         } catch (error) {
             console.error("Error creating character:", error);
         }

@@ -3,7 +3,7 @@ import { auth, db } from "@/firebase/init";
 import { collection, getDocs } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { Card } from "@/components/ui/card";
-import { Table, TableHeader, TableRow, TableCell } from "@/components/ui/table";
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -11,6 +11,9 @@ export default function CharactersPage() {
     interface Character {
         id: string;
         name: string;
+        race: string;
+        class: string;
+        background: string;
         [key: string]: any;
     }
 
@@ -34,6 +37,9 @@ export default function CharactersPage() {
         const charactersData = snapshot.docs.map(doc => ({
             id: doc.id,
             name: doc.data().name || "Unnamed Character",
+            race: doc.data().race || "Unknown Race",
+            class: doc.data().class || "Unknown Class",
+            background: doc.data().background || "Unknown Background",
             ...doc.data()
         }));
         setCharacters(charactersData);
@@ -54,33 +60,53 @@ export default function CharactersPage() {
                 My Characters
             </h1>
 
-                <Card className="w-[90vw] h-[65vh] p-0 flex flex-row gap-0 mt-8 p-8">
-                <Table className="w-full h-full flex flex-col items-center">
-                    <TableHeader className="w-full flex flex-row justify-between items-center">
-                        <h2 className="text-[20px]">Characters</h2>
-                        <Button
-                            onClick={() => router.push("/create-character")}
-                            className="hover:cursor-pointer"
-                        >
-                            Add Character
-                        </Button>
-                    </TableHeader>
-                    <div className="w-[95%] flex flex-col items-center">
-                        <Separator className="m-8" />
-                    </div>
-                    <tbody>
-                        {characters.map((character) => (
-                            <TableRow
-                                key={character.id}
-                                onClick={() => router.push(`/character/${character.id}`)}
-                                className="cursor-pointer hover:bg-gray-100"
-                            >
-                                <TableCell>{character.name}</TableCell>
+            <Card className="w-[90vw] h-[75vh] flex items-center justify-center mt-8">
+                <div className="w-[85%] flex justify-between items-center px-4 py-2">
+                    <h2 className="text-[20px] font-semibold">Characters</h2>
+                    <Button
+                        onClick={() => router.push("/create-character")}
+                        className="hover:cursor-pointer"
+                    >
+                        Add Character
+                    </Button>
+                </div>
+                <div className="w-[85%] h-[70%]">
+                    <Table>
+                        <TableHeader>
+                            <TableRow className="">
+                                <TableHead className="text-left px-4 py-2">Name</TableHead>
+                                <TableHead className="text-left px-4 py-2">Race</TableHead>
+                                <TableHead className="text-left px-4 py-2">Class</TableHead>
+                                <TableHead className="text-left px-4 py-2">Background</TableHead>
+                                <TableHead className="text-left px-4 py-2">Actions</TableHead>
                             </TableRow>
-                        ))}
-                    </tbody>
-                </Table>
-                </Card>
+                        </TableHeader>
+                        <TableBody className="border rounded-md">
+                            {characters.map((character) => (
+                                <TableRow
+                                    key={character.id}
+                                    className="cursor-pointer"
+                                >
+                                    <TableCell className="px-4 py-2">{character.name}</TableCell>
+                                    <TableCell className="px-4 py-2">{character.race}</TableCell>
+                                    <TableCell className="px-4 py-2">{character.class}</TableCell>
+                                    <TableCell className="px-4 py-2">{character.background}</TableCell>
+                                    <TableCell className="px-4 py-2 w-[0px]">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => router.push(`/character/${character.id}`)}
+                                            className="hover:cursor-pointer"
+                                        >
+                                            View
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            </Card>
         </main>
     );
 }
