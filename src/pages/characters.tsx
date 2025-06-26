@@ -106,7 +106,7 @@ export default function CharactersPage() {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => router.push(`/character/${character.id}`)}
+                                            onClick={() => router.push(`/character/${auth.currentUser?.uid}/${character.id}`)}
                                             className="hover:cursor-pointer mr-2 ml-2"
                                         >
                                             View
