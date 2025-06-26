@@ -7,13 +7,32 @@ import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@
 import { Button } from "@/components/ui/button";
 
 export default function CharactersPage() {
+    interface Stats {
+        strength: number;
+        dexterity: number;
+        constitution: number;
+        intelligence: number;
+        wisdom: number;
+        charisma: number;
+    }
+
+    interface Equipment {
+        meleeWeapon: string;
+        rangedWeapon: string;
+        martialMeleeWeapon: string;
+        martialRangedWeapon: string;
+        armor: string;
+        shield: string;
+    }
+
     interface Character {
         id: string;
         name: string;
         race: string;
         class: string;
         background: string;
-        [key: string]: any;
+        stats: Stats;
+        equipment: Equipment;
     }
 
     const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -33,13 +52,28 @@ export default function CharactersPage() {
     const fetchCharacters = async (userId: string) => {
         const charactersRef = collection(db, `users/${userId}/characters`);
         const snapshot = await getDocs(charactersRef);
-        const charactersData = snapshot.docs.map(doc => ({
+        const charactersData: Character[] = snapshot.docs.map((doc) => ({
             id: doc.id,
             name: doc.data().name || "Unnamed Character",
             race: doc.data().race || "Unknown Race",
             class: doc.data().class || "Unknown Class",
             background: doc.data().background || "Unknown Background",
-            ...doc.data()
+            stats: doc.data().stats || {
+                strength: 0,
+                dexterity: 0,
+                constitution: 0,
+                intelligence: 0,
+                wisdom: 0,
+                charisma: 0,
+            },
+            equipment: doc.data().equipment || {
+                meleeWeapon: "",
+                rangedWeapon: "",
+                martialMeleeWeapon: "",
+                martialRangedWeapon: "",
+                armor: "",
+                shield: "",
+            },
         }));
         setCharacters(charactersData);
     };
@@ -50,11 +84,13 @@ export default function CharactersPage() {
             const characterDocRef = doc(db, `users/${user?.uid}/characters`, characterId);
             await deleteDoc(characterDocRef);
             console.log("Character deleted successfully");
-            setCharacters(prevCharacters => prevCharacters.filter(character => character.id !== characterId));
+            setCharacters((prevCharacters) =>
+                prevCharacters.filter((character) => character.id !== characterId)
+            );
         } catch (error) {
             console.error("Error deleting character:", error);
         }
-    }
+    };
 
     if (loggedIn === null) {
         return <div>Loading...</div>;
@@ -94,10 +130,7 @@ export default function CharactersPage() {
                         </TableHeader>
                         <TableBody className="border rounded-md">
                             {characters.map((character) => (
-                                <TableRow
-                                    key={character.id}
-                                    className="cursor-pointer"
-                                >
+                                <TableRow key={character.id} className="cursor-pointer">
                                     <TableCell className="px-4 py-2">{character.name}</TableCell>
                                     <TableCell className="px-4 py-2">{character.race}</TableCell>
                                     <TableCell className="px-4 py-2">{character.class}</TableCell>
@@ -106,7 +139,11 @@ export default function CharactersPage() {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => router.push(`/character/${auth.currentUser?.uid}/${character.id}`)}
+                                            onClick={() =>
+                                                router.push(
+                                                    `/character/${auth.currentUser?.uid}/${character.id}`
+                                                )
+                                            }
                                             className="hover:cursor-pointer mr-2 ml-2"
                                         >
                                             View
