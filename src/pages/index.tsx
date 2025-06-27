@@ -43,11 +43,11 @@ export default function Home() {
           }}
         >
           <Button variant="outline" className="w-[10rem] h-[2.6rem] mt-6 mr-3 hover:cursor-pointer">
-            <Link href="/characters">My Characters</Link>
+            <Link href="/characters" className="w-full h-full flex items-center justify-center">My Characters</Link>
           </Button>
 
           <Button variant="outline" className="w-[10rem] h-[2.6rem] mt-6 ml-3 hover:cursor-pointer">
-            <Link href="/">My Campaigns</Link>
+            <Link href="/account" className="w-full h-full flex items-center justify-center">My Account</Link>
           </Button>
         </motion.div>
       </LampContainer>
