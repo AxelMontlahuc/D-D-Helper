@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { auth, db } from "@/firebase/init";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function CreateCharacterPage() {
     const [characterData, setCharacterData] = useState({
+        draft: true,
         name: "",
         race: "",
         class: "",
@@ -31,10 +32,30 @@ export default function CreateCharacterPage() {
     });
 
     const [step, setStep] = useState(0);
+    const [characterDocId, setCharacterDocId] = useState<string | null>(null);
     const router = useRouter();
     const totalSteps = 2;
 
+    const saveCharacterData = async () => {
+        const user = auth.currentUser;
+        try {
+            if (!characterDocId) {
+                const charactersRef = collection(db, `users/${user?.uid}/characters`);
+                const docRef = await addDoc(charactersRef, characterData);
+                setCharacterDocId(docRef.id);
+                console.log("Character created with ID:", docRef.id);
+            } else {
+                const characterRef = doc(db, `users/${user?.uid}/characters`, characterDocId);
+                await updateDoc(characterRef, characterData);
+                console.log("Character updated successfully!");
+            }
+        } catch (error) {
+            console.error("Error saving character:", error);
+        }
+    }
+
     const handleNext = () => {
+        saveCharacterData();
         if (step < totalSteps) {
             setStep(step + 1);
         }
@@ -49,12 +70,25 @@ export default function CreateCharacterPage() {
     const handleFinish = async () => {
         const user = auth.currentUser;
         try {
-            const charactersRef = collection(db, `users/${user?.uid}/characters`);
-            await addDoc(charactersRef, characterData);
-            console.log("Character created successfully!");
+            const updatedCharacterData = {
+                ...characterData,
+                draft: false
+            };
+            setCharacterData(updatedCharacterData);
             
+            if (characterDocId) {
+                // Update existing document to mark as complete
+                const characterRef = doc(db, `users/${user?.uid}/characters`, characterDocId);
+                await updateDoc(characterRef, updatedCharacterData);
+            }
+            
+            console.log("Character completed successfully!");
+            
+            // Reset for next character
             setStep(0);
+            setCharacterDocId(null);
             setCharacterData({
+                draft: true,
                 name: "",
                 race: "",
                 class: "",
@@ -79,7 +113,7 @@ export default function CreateCharacterPage() {
 
             router.push("/characters");
         } catch (error) {
-            console.error("Error creating character:", error);
+            console.error("Error completing character:", error);
         }
     }
 
@@ -518,16 +552,6 @@ export default function CreateCharacterPage() {
                             </div>
                         </div>
                     )}
-                    {/*{step === 3 && (
-                        <div className="h-min flex flex-col items-center p-4 gap-10">
-                            <h2 className="w-full bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-5xl">
-                                Step 4: Spells
-                            </h2>
-                            <div className="flex flex-col items-center gap-6">
-                                WIP
-                            </div>
-                        </div>
-                    )}*/}
                 </div>
             </div>
         </main>
